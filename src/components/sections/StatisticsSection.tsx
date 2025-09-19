@@ -9,25 +9,26 @@ interface StatisticsSectionProps {
 }
 
 export const StatisticsSection: React.FC<StatisticsSectionProps> = ({ statistics }) => {
+  // 고정 KPI 값 (요청 반영)
   const statCards = [
     {
       icon: Users,
       label: '전체 시그',
-      value: statistics.totalSigs,
+      value: 31,
       color: 'from-blue-500 to-blue-600',
       suffix: '개'
     },
     {
       icon: TrendingUp,
       label: '활동 멤버',
-      value: statistics.totalMembers,
+      value: 1416,
       color: 'from-purple-500 to-purple-600',
       suffix: '명+'
     },
     {
       icon: Award,
       label: '카테고리',
-      value: statistics.categoryCounts.length,
+      value: 15,
       color: 'from-pink-500 to-pink-600',
       suffix: '개'
     },
@@ -99,7 +100,12 @@ export const StatisticsSection: React.FC<StatisticsSectionProps> = ({ statistics
           </h1>
         </motion.div>
 
-        {/* Stat Cards */}
+        {/* 개요 */}
+        <div className="mb-4 px-4">
+          <h2 className="text-3xl font-title">
+            <span className="text-underline-clean" style={{ "--underline-scale": 1 } as any}>개요</span>
+          </h2>
+        </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
           {statCards.map((stat, index) => (
             <motion.div
@@ -124,7 +130,12 @@ export const StatisticsSection: React.FC<StatisticsSectionProps> = ({ statistics
           ))}
         </div>
 
-        {/* Charts Section */}
+        {/* 차트 */}
+        <div className="mb-4 px-4">
+          <h2 className="text-3xl font-title">
+            <span className="text-underline-clean" style={{ "--underline-scale": 1 } as any}>차트</span>
+          </h2>
+        </div>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           <CategoryChart data={statistics.categoryCounts} />
           

@@ -10,6 +10,11 @@ import { generateStatistics } from './utils/statistics';
 import sigData from './data/sigs.json';
 import './App.css';
 import SigNetworkSection from './components/sections/SigNetworkSection';
+import FederationIntroSection from './components/sections/FederationIntroSection.tsx';
+import FederationHistorySection from './components/sections/FederationHistorySection.tsx';
+import FederationPerformanceSection from './components/sections/FederationPerformanceSection.tsx';
+import ChapterHeader from './components/sections/ChapterHeader.tsx';
+// moved above with explicit extensions
 // Slides removed per request
 
 function App() {
@@ -48,6 +53,17 @@ function App() {
       <section id="home">
         <HeroSection />
       </section>
+      <ChapterHeader id="chapter-federation" title="시그연합회" subtitle="소개 · 연혁 · 출범 후 성과" />
+      <section id="federation">
+        <FederationIntroSection />
+      </section>
+      <section id="federation-history">
+        <FederationHistorySection />
+      </section>
+      <section id="federation-performance">
+        <FederationPerformanceSection />
+      </section>
+      <ChapterHeader id="chapter-stats" title="시그현황" subtitle="시그 통계 · 시그 갤러리" />
       <section id="statistics">
         {statistics && <StatisticsSection statistics={statistics} />}
       </section>
@@ -57,6 +73,7 @@ function App() {
       <section id="gallery">
         <SigGallery sigs={sigData.sigs} categories={sigData.categories} />
       </section>
+      <ChapterHeader id="chapter-cup" title="시그컵" />
       <section id="sigcup">
         <SigCupSection />
       </section>

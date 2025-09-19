@@ -28,7 +28,7 @@ export const SigNetworkSection: React.FC = () => {
         if (!res.ok) throw new Error('member.json 로드 실패')
         const data = await res.json()
         if (aborted) return
-        // Keep only SIG nodes (drop member nodes from nodes list; links remain)
+        // Keep only nodes with node_type field; links remain
         if (data && data.network && Array.isArray(data.network.nodes)) {
           data.network.nodes = data.network.nodes.filter((n: any) => n && n.node_type)
         }
@@ -43,6 +43,13 @@ export const SigNetworkSection: React.FC = () => {
   }, [networkData, setAnalysisResult, setError, setLoading])
 
   const chartData = getChartData()
+  const adjustedChartData = React.useMemo(() => {
+    if (!chartData) return null
+    return {
+      ...chartData,
+      overallStats: { ...chartData.overallStats, totalSigs: 31 },
+    }
+  }, [chartData])
   const sigStats = chartData?.sigStats || []
   const [query, setQuery] = useState('')
   const filtered = useMemo(() => {
@@ -55,41 +62,19 @@ export const SigNetworkSection: React.FC = () => {
   const page1 = filtered.slice(0, mid)
   const page2 = filtered.slice(mid)
 
-  // Local scrollable containers
   const listRef1 = useRef<HTMLDivElement>(null)
   const listRef2 = useRef<HTMLDivElement>(null)
   const focusFirst = useCallback(() => listRef1.current?.focus(), [])
 
-  // Sticky TOC active state
-  const [active, setActive] = useState<string>('net-overview')
-  const sections = useMemo(() => ['net-overview', 'net-charts', 'net-list'], [])
-  const scrollTo = useCallback((id: string) => {
-    const el = document.getElementById(id)
-    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' })
-  }, [])
-  useEffect(() => {
-    const obs = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          const id = entry.target.getAttribute('id')
-          if (id) setActive(id)
-        }
-      })
-    }, { threshold: 0.55 })
-    sections.forEach(id => {
-      const el = document.getElementById(id)
-      if (el) obs.observe(el)
-    })
-    return () => obs.disconnect()
-  }, [sections])
-
   return (
-    <div className="py-16">
-      <div className="max-w-7xl mx-auto px-4">
+    <div className="py-20 relative overflow-hidden">
+      <div className="absolute inset-0 pointer-events-none opacity-30">
+        <div className="absolute -top-24 -left-24 w-[420px] h-[420px] rounded-full grad-primary blur-3xl" />
+        <div className="absolute -bottom-24 -right-24 w-[420px] h-[420px] rounded-full grad-secondary blur-3xl" />
+      </div>
+      <div className="max-w-7xl mx-auto px-4 relative">
         <div className="grid grid-cols-12 gap-6">
-          {/* Main content - full width (global TOC used) */}
           <main className="col-span-12 space-y-12">
-            {/* Title */}
             <div>
               <h2 className="relative text-3xl sm:text-4xl md:text-5xl">
                 <span 
@@ -120,10 +105,10 @@ export const SigNetworkSection: React.FC = () => {
               <h3 className="text-3xl font-title mb-4">
                 <span className="text-underline-clean" style={{ "--underline-scale": 1 } as any}>차트</span>
               </h3>
-              {chartData ? (
+              {adjustedChartData ? (
                 <div className="space-y-8">
-                  <OverallStatsPanel data={chartData} />
-                  <SigStatisticsChart data={chartData.sigStats} />
+                  <OverallStatsPanel data={adjustedChartData} />
+                  <SigStatisticsChart data={adjustedChartData.sigStats} />
                 </div>
               ) : (
                 <div className="text-gray-400">데이터가 없습니다. public/data/member.json을 확인하세요.</div>
@@ -147,7 +132,6 @@ export const SigNetworkSection: React.FC = () => {
               </div>
 
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                {/* Page 1 */}
                 <div className="glass rounded-2xl overflow-hidden">
                   <div className="grid grid-cols-12 text-white/70 text-xs px-4 py-2 border-b border-white/10 bg-black/20">
                     <div className="col-span-7">시그명</div>
@@ -177,7 +161,6 @@ export const SigNetworkSection: React.FC = () => {
                   </div>
                 </div>
 
-                {/* Page 2 */}
                 <div className="glass rounded-2xl overflow-hidden">
                   <div className="grid grid-cols-12 text-white/70 text-xs px-4 py-2 border-b border-white/10 bg-black/20">
                     <div className="col-span-7">시그명</div>

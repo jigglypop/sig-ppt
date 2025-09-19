@@ -11,11 +11,13 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({ onNavigate }) => {
 
   const menuItems = [
     { id: 'home', label: '홈' },
+    { id: 'federation', label: '시그연합회 소개' },
+    { id: 'federation-history', label: '시그연합회 연혁' },
+    { id: 'federation-performance', label: '시그연합회 성과' },
     { id: 'statistics', label: '시그 현황' },
     { id: 'network', label: '네트워크' },
     { id: 'gallery', label: '시그 갤러리' },
     { id: 'sigcup', label: '시그컵' },
-    { id: 'slides', label: '발표자료' },
   ];
 
   const handleNavigate = (section: string) => {
