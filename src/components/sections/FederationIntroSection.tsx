@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react'
+import type { ReactNode } from 'react'
 import { motion } from 'framer-motion'
 
 interface LeaderCardProps {
@@ -78,9 +78,7 @@ export const FederationIntroSection: React.FC = () => {
             lines={[
               '부시그코디네이터',
               (<span key="strike" className="line-through">냥시그냥 (시그장)</span>),
-              '부시그장',
-              '(시그장 오레오)',
-              '오레오님의 집사',
+              '(시그장 오레오님의 집사)',
             ]}
           />
         </div>

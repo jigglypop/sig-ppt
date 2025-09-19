@@ -2,11 +2,9 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useNetworkStore } from '@/store/networkStore'
 import OverallStatsPanel from '@/components/charts/OverallStatsPanel'
 import SigStatisticsChart from '@/components/charts/SigStatisticsChart'
-import LegacyStatsPanel from '@/components/StatsPanel'
 
 export const SigNetworkSection: React.FC = () => {
   const {
-    analysisResult,
     networkData,
     isLoading,
     error,
@@ -81,33 +79,19 @@ export const SigNetworkSection: React.FC = () => {
                   className="font-title text-underline-clean"
                   style={{ "--underline-scale": 1 } as any}
                 >
-                  시그 네트워크 통계
+                  그래프 요약
                 </span>
                 <br />
               </h2>
-              <p className="text-gray-300 mt-2">중복 가입 현황과 시그별 지표를 한눈에 확인합니다.</p>
             </div>
-
-            {/* Page 1: Overview */}
-            <section id="net-overview" className="scroll-mt-24">
-              <h3 className="text-3xl font-title mb-4">
-                <span className="text-underline-clean" style={{ "--underline-scale": 1 } as any}>개요</span>
-              </h3>
-              {analysisResult && (
-                <div className="mb-6">
-                  <LegacyStatsPanel />
-                </div>
-              )}
-            </section>
 
             {/* Page 2: Charts */}
             <section id="net-charts" className="scroll-mt-24">
               <h3 className="text-3xl font-title mb-4">
-                <span className="text-underline-clean" style={{ "--underline-scale": 1 } as any}>차트</span>
+                <span className="text-underline-clean" style={{ "--underline-scale": 1 } as any}>그래프 요약</span>
               </h3>
               {adjustedChartData ? (
                 <div className="space-y-8">
-                  <OverallStatsPanel data={adjustedChartData} />
                   <SigStatisticsChart data={adjustedChartData.sigStats} />
                 </div>
               ) : (

@@ -1,5 +1,5 @@
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { Trophy, Calendar, Users } from 'lucide-react';
 
 export const SigCupSection: React.FC = () => {
@@ -40,7 +40,7 @@ export const SigCupSection: React.FC = () => {
 
   const schedule = [
     { title: "온라인 예선", period: "10월 15일 ~ 11월 3일" },
-    { title: "오프라인 결승", period: "11월 둘째 주 토요일, 전일 진행" },
+    { title: "오프라인 결승", period: "11월 8일(토), 전일 진행" },
   ];
 
   const onlineGames = [
@@ -56,9 +56,9 @@ export const SigCupSection: React.FC = () => {
   ];
 
   const boardGames = [
-    { name: "포커", category: "카드", description: "텍사스 홀덤 방식", image: "/poster/포커.png" },
+    { name: "홀덤", category: "카드", description: "텍사스 홀덤 방식", image: "/poster/홀덤.png" },
     { name: "루미큐브", category: "타일", description: "숫자 조합 전략 게임", image: "/poster/루미큐브.png" },
-    { name: "할리갈리", category: "반응", description: "빠른 반응속도 게임", image: "/poster/할리갈리.png" },
+    { name: "티켓투라이드", category: "반응", description: "기찻길 만들기", image: "/poster/티켓투라이드.png" },
     { name: "체스", category: "전략", description: "클래식 보드게임의 정수", image: "/poster/체스.png" },
     { name: "스플렌더", category: "엔진빌딩", description: "자원 관리 전략 게임", image: "/poster/스플렌더.png" },
   ];
@@ -67,16 +67,19 @@ export const SigCupSection: React.FC = () => {
     return category === '전략' ? 'academic' : category === 'FPS' ? 'game' : category === '격투' ? 'social' : category === '카드' ? 'game' : 'hobby';
   };
 
-  const GameCard = ({ game, variant = 'standard' }: { game: { name: string; category: string; description?: string; image?: string }; variant?: 'poster' | 'standard' | 'frame' }) => {
+  const [expandedName, setExpandedName] = useState<string | null>(null);
+
+  const GameCard = ({ game, variant = 'standard', isExpanded = false }: { game: { name: string; category: string; description?: string; image?: string }; variant?: 'poster' | 'standard' | 'frame', isExpanded?: boolean }) => {
     if (variant === 'frame') {
       return (
         <motion.div
           key={game.name}
-          className="group relative w-full min-w-0 overflow-hidden shadow-2xl shadow-black/50"
+          className="group relative w-full h-full min-w-0 overflow-hidden shadow-2xl shadow-black/50 cursor-pointer"
           whileHover={{ scale: 1.01 }}
           aria-label={`${game.name} 액자 카드`}
+          onClick={() => setExpandedName(prev => prev === game.name ? null : game.name)}
         >
-          <div className="relative w-full" style={{ paddingTop: '150%' }}>{/* 2:3 portrait */}
+          <div className="relative w-full h-full">{/* fill cell */}
             <img
               src={game.image || '/images/sigcup.webp'}
               alt={`${game.name} 포스터`}
@@ -84,14 +87,14 @@ export const SigCupSection: React.FC = () => {
               loading="lazy"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-            <div className="pointer-events-none absolute inset-x-0 bottom-0 p-3 sm:p-4 opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-2 group-hover:translate-y-0">
-              <div className="bg-black/55 backdrop-blur-sm px-3 py-2 sm:px-4 sm:py-3 border-t border-white/10">
-                <h4 className="text-white text-base sm:text-lg font-semibold drop-shadow">{game.name}</h4>
-                {game.description && (
-                  <p className="text-gray-200 text-xs sm:text-sm mt-1 line-clamp-2">{game.description}</p>
-                )}
+            {!isExpanded && (
+              <div className="absolute bottom-2 left-2 right-2">
+                <div className="bg-black/60 backdrop-blur-sm px-3 py-2 rounded-lg border border-white/10 flex items-center gap-2">
+                  <span className="text-white text-sm font-semibold">{game.name}</span>
+                  <span className="ml-auto text-xs text-white/80">{game.category}</span>
+                </div>
               </div>
-            </div>
+            )}
           </div>
         </motion.div>
       );
@@ -136,9 +139,10 @@ export const SigCupSection: React.FC = () => {
     return (
       <motion.div 
         key={game.name}
-        className="group relative rounded-2xl overflow-hidden"
+        className="group relative rounded-2xl overflow-hidden cursor-pointer"
         whileHover={{ scale: 1.02 }}
         aria-label={`${game.name} 카드`}
+        onClick={() => setExpandedName(prev => prev === game.name ? null : game.name)}
       >
         <div className="absolute inset-0 grad-soft opacity-30" />
         <img
@@ -151,11 +155,9 @@ export const SigCupSection: React.FC = () => {
         <div className="absolute top-3 left-3">
           <span className={`tag tag-${getTagClass(game.category)}`}>{game.category}</span>
         </div>
+        {/* 항상 노출되는 종목명 라벨 */}
         <div className="absolute bottom-0 left-0 right-0 p-4">
           <h4 className="text-white text-lg font-semibold">{game.name}</h4>
-          {game.description && (
-            <p className="text-gray-300 text-sm mt-1">{game.description}</p>
-          )}
         </div>
         <div className="absolute inset-0 ring-1 ring-white/10 rounded-2xl" />
       </motion.div>
@@ -228,6 +230,12 @@ export const SigCupSection: React.FC = () => {
         style={{ opacity, y }}
         className="relative z-10 max-w-7xl mx-auto px-4"
       >
+        {/* 시그컵 소개 */}
+        <div id="sigcup-intro" className="scroll-mt-24 mb-6">
+          <h3 className="text-3xl font-title text-white mb-3">
+            <span className="text-underline-clean" style={{ "--underline-scale": 1 } as any}>시그컵 소개</span>
+          </h3>
+        </div>
         {/* Hero Section */}
         <motion.div
           style={{ scale }}
@@ -290,6 +298,12 @@ export const SigCupSection: React.FC = () => {
           </div>
         </motion.div>
         
+        {/* 시그컵 현황 */}
+        <div id="sigcup-status" className="scroll-mt-24 mb-6">
+          <h3 className="text-3xl font-title text-white mb-3">
+            <span className="text-underline-clean" style={{ "--underline-scale": 1 } as any}>시그컵 현황</span>
+          </h3>
+        </div>
         {/* Features Grid */}
         <div className="grid md:grid-cols-3 gap-8 mb-20">
           {features.map((feature, index) => (
@@ -373,20 +387,56 @@ export const SigCupSection: React.FC = () => {
           </h3>
         </div>
       
+        {/* 시그컵 종목 */}
+        <div id="sigcup-games" className="scroll-mt-24 mb-6">
+          <h3 className="text-3xl font-title text-white mb-3">
+            <span className="text-underline-clean" style={{ "--underline-scale": 1 } as any}>시그컵 종목</span>
+          </h3>
+        </div>
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.1 }}
           className="mt-12 mx-4 sm:mx-8 md:mx-20 lg:mx-40"
         >
-          <div className="relative mb-12">
-            <div className="absolute inset-0 -m-8 glass-dark rounded-3xl opacity-30" />
-            <div className="relative grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 sm:gap-6 justify-items-center">
-              {[...onlineGames, ...boardGames].map((game) => (
-                <GameCard key={game.name} game={game} variant={'frame'} />
-              ))}
+            <div className="relative mb-12">
+              <div className="absolute inset-0 -m-8 glass-dark rounded-3xl opacity-30" />
+              <div className="relative grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 sm:gap-6 justify-items-stretch grid-flow-dense auto-rows-[180px] sm:auto-rows-[220px] md:auto-rows-[260px] lg:auto-rows-[300px]">
+                {[...onlineGames, ...boardGames].map((game) => {
+                  const isExpanded = expandedName === game.name
+                  const spanCls = isExpanded ? 'col-span-2 row-span-2' : 'col-span-1 row-span-1'
+                  return (
+                    <motion.div
+                      key={game.name}
+                      layout
+                      transition={{ layout: { duration: 0.35, type: 'spring', stiffness: 250, damping: 24 } }}
+                      className={`relative ${spanCls}`}
+                    >
+                      <GameCard game={game} variant={'frame'} isExpanded={isExpanded} />
+                      {isExpanded && (
+                        <motion.div
+                          initial={{ opacity: 0, y: 8 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          className="absolute bottom-2 left-2 right-2"
+                        >
+                          <div className="bg-black/70 backdrop-blur-sm px-3 py-2 rounded-lg border border-white/10">
+                            <div className="flex items-center gap-2">
+                              <h4 className="text-white text-base sm:text-lg font-semibold">{game.name}</h4>
+                              <span className={`tag tag-${getTagClass(game.category)} ml-auto`}>{game.category}</span>
+                            </div>
+                            {game.description && (
+                              <p className="text-white/85 text-xs sm:text-sm mt-1">
+                                {game.description}
+                              </p>
+                            )}
+                          </div>
+                        </motion.div>
+                      )}
+                    </motion.div>
+                  )
+                })}
+              </div>
             </div>
-          </div>
         </motion.div>
         <motion.div
           initial={{ opacity: 0, y: 30 }}

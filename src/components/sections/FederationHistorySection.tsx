@@ -29,12 +29,11 @@ export const FederationHistorySection: React.FC = () => {
           </h2>
         </div>
 
-        <div className="space-y-6">
+          <div className="space-y-6">
           <div className="glass rounded-3xl p-8">
-            <ol className="relative border-l border-white/15 pl-6 space-y-6">
+            <ol className="border-l border-white/15 pl-4 space-y-6">
               {items.map((it, idx) => (
                 <li key={idx} className="">
-                  <div className="absolute -left-[9px] mt-1 w-4 h-4 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 ring-2 ring-white/20" />
                   <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
                     <p className="text-white text-lg font-semibold">{idx+1}) {it.title}</p>
                     <p className="text-white/80">{it.date}</p>

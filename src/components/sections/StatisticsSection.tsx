@@ -1,45 +1,19 @@
 import { motion } from 'framer-motion';
-import { AnimatedCounter } from '../ui/AnimatedCounter';
+// removed counter; using network overall panel
 import { CategoryChart } from '../ui/CategoryChart';
+import OverallStatsPanel from '@/components/charts/OverallStatsPanel';
+import { useNetworkStore } from '@/store/networkStore';
 import type { Statistics } from '../../utils/statistics';
-import { TrendingUp, Users, Award, Activity } from 'lucide-react';
+// icons no longer used here
 
 interface StatisticsSectionProps {
   statistics: Statistics;
 }
 
 export const StatisticsSection: React.FC<StatisticsSectionProps> = ({ statistics }) => {
-  // 고정 KPI 값 (요청 반영)
-  const statCards = [
-    {
-      icon: Users,
-      label: '전체 시그',
-      value: 31,
-      color: 'from-blue-500 to-blue-600',
-      suffix: '개'
-    },
-    {
-      icon: TrendingUp,
-      label: '활동 멤버',
-      value: 1416,
-      color: 'from-purple-500 to-purple-600',
-      suffix: '명+'
-    },
-    {
-      icon: Award,
-      label: '카테고리',
-      value: 15,
-      color: 'from-pink-500 to-pink-600',
-      suffix: '개'
-    },
-    {
-      icon: Activity,
-      label: '평균 참여율',
-      value: 87,
-      color: 'from-green-500 to-green-600',
-      suffix: '%'
-    }
-  ];
+  // 네트워크 기반 전체 통계 패널로 교체
+  const { getChartData } = useNetworkStore();
+  const chartData = getChartData();
 
   return (
     <section className="py-20 px-4 relative overflow-hidden">
@@ -100,40 +74,17 @@ export const StatisticsSection: React.FC<StatisticsSectionProps> = ({ statistics
           </h1>
         </motion.div>
 
-        {/* 개요 */}
-        <div className="mb-4 px-4">
-          <h2 className="text-3xl font-title">
-            <span className="text-underline-clean" style={{ "--underline-scale": 1 } as any}>개요</span>
-          </h2>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-          {statCards.map((stat, index) => (
-            <motion.div
-              key={stat.label}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              whileHover={{ scale: 1.05 }}
-              className="relative group"
-            >
-              <div className="absolute inset-0 bg-gradient-to-r opacity-60 group-hover:opacity-95 transition-opacity rounded-2xl blur-lg" 
-                style={{ background: `linear-gradient(to right, var(--tw-gradient-stops))` }}
-              />
-              <div className="relative glass rounded-2xl p-6">
-                <div className={`inline-flex p-3 rounded-lg bg-gradient-to-r ${stat.color} mb-4`}>
-                  <stat.icon className="w-6 h-6 text-white" />
-                </div>
-                <p className="text-gray-400 text-sm mb-2">{stat.label}</p>
-                <AnimatedCounter target={stat.value} suffix={stat.suffix} />
-              </div>
-            </motion.div>
-          ))}
-        </div>
+        {/* 개요: 네트워크 전체 통계 요약으로 대체 */}
+        {chartData && (
+          <div className="mb-10">
+            <OverallStatsPanel data={chartData} />
+          </div>
+        )}
 
-        {/* 차트 */}
+        {/* 카테고리 분포 */}
         <div className="mb-4 px-4">
           <h2 className="text-3xl font-title">
-            <span className="text-underline-clean" style={{ "--underline-scale": 1 } as any}>차트</span>
+            <span className="text-underline-clean" style={{ "--underline-scale": 1 } as any}>카테고리 분포</span>
           </h2>
         </div>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">

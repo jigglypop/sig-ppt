@@ -44,7 +44,10 @@ const DuplicationAnalysisChart: React.FC<DuplicationAnalysisChartProps> = ({ dat
                 cx="50%"
                 cy="50%"
                 labelLine={false}
-                label={({ name, percent = 0 }) => `${name} ${(percent * 100).toFixed(1)}%`}
+                label={(props: any) => {
+                  const pct = props && typeof props.percent === 'number' ? props.percent : 0
+                  return `${props.name} ${(pct * 100).toFixed(1)}%`
+                }}
                 outerRadius={80}
                 fill="#8884d8"
                 dataKey="value"
