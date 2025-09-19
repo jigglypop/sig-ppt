@@ -1,0 +1,102 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html, body, #root {
+  width: 100%;
+  height: 100%;
+}
+
+/* App gradient background */
+/* Background: replace with requested gradient */
+/* If you have the exact CSS snippet, paste it below to override. */
+body {
+  background: radial-gradient(800px 480px at 10% -10%, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0) 60%),
+              linear-gradient(180deg, #1d1d1d 0%, #111111 100%);
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+/* Custom font disabled for offline file:// execution without bundling fonts.
+   If you add fonts later, prefer relative paths and place them under public/fonts.
+@font-face {
+  font-family: 'Pretendard';
+  src: url('./fonts/Pretendard-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Pretendard';
+  src: url('./fonts/Pretendard-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+*/
+
+* { font-family: Inter, system-ui, -apple-system, 'Noto Sans KR', Segoe UI, Roboto, Arial, sans-serif; }
+
+
+/* 커스텀 스크롤바 */
+.custom-scroll::-webkit-scrollbar { width: 10px; height: 10px; }
+.custom-scroll::-webkit-scrollbar-track { background: rgba(255,255,255,0.06); border-radius: 8px; }
+.custom-scroll::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.18); border-radius: 8px; border: 2px solid rgba(0,0,0,0); background-clip: padding-box; }
+.custom-scroll::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.28); }
+
+/* responsive helpers */
+.container { max-width: 1280px; }
+
+/* 글래스모피즘 유틸 (필요 시 클래스 이름으로 사용) */
+.glass {
+  position: relative;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  background: rgba(24,24,24,0.55);
+  border: 1px solid rgba(255,255,255,0.12);
+}
+
+/* gradient edge for glass */
+.glass::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(135deg, #6a82fb, #fc5c7d);
+  -webkit-mask: 
+    linear-gradient(#000 0 0) content-box, 
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+}
+
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.5rem;
+  padding: 0.5rem 1rem;
+  font-weight: 500;
+  transition: background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.btn-glass {
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.2);
+  color: #fff;
+}
+.btn-glass:hover { background: rgba(255,255,255,0.14); }
+.btn-glass:disabled { opacity: .6; cursor: not-allowed; }
+
+.btn-primary {
+  background: linear-gradient(90deg, rgba(106,130,251,0.8), rgba(252,92,125,0.8));
+  border: 1px solid rgba(255,255,255,0.25);
+  color: #fff;
+}
+.btn-primary:hover { background: linear-gradient(90deg, rgba(106,130,251,0.9), rgba(252,92,125,0.9)); }
+
