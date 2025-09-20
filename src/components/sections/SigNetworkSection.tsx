@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useNetworkStore } from '@/store/networkStore'
-import OverallStatsPanel from '@/components/charts/OverallStatsPanel'
 import SigStatisticsChart from '@/components/charts/SigStatisticsChart'
 
 export const SigNetworkSection: React.FC = () => {
