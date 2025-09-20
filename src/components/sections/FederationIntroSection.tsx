@@ -52,6 +52,22 @@ export const FederationIntroSection: React.FC = () => {
           </h2>
         </div>
 
+        {/* 연합회 비전/협업 안내 */}
+        <div className="glass rounded-3xl p-6 md:p-8 mb-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-start">
+            <div>
+              <h3 className="text-xl font-semibold text-white mb-2">왜 시그연합회인가</h3>
+              <ul className="list-disc list-inside text-white/90 space-y-1">
+                <li>모든 분야가 다 있는 멘사 내의 포텐셜</li>
+              </ul>
+            </div>
+            <div>
+              <h3 className="text-xl font-semibold text-white mb-2">협업 요청</h3>
+              <p className="text-white/85">연합회/위원회/시그 간 적극적인 협업 신청을 환영합니다. 함께 시너지를 만들어 보세요.</p>
+            </div>
+          </div>
+        </div>
+
         {/* 1행: 코디네이터 단독, 2행: 부코디네이터 2명 */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-stretch">
           <div className="md:col-span-2">

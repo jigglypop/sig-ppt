@@ -39,13 +39,13 @@ export const SigNetworkSection: React.FC = () => {
   const filtered = useMemo(() => {
     if (!query) return sigStats
     const q = query.toLowerCase()
-    return sigStats.filter(s => s.sigName.toLowerCase().includes(q))
+    return sigStats.filter((s: any) => s.sigName.toLowerCase().includes(q))
   }, [sigStats, query])
 
   // 단일 리스트 렌더링으로 변경
 
   const listRef1 = useRef<HTMLDivElement>(null)
-  const listRef2 = useRef<HTMLDivElement>(null)
+  // const listRef2 = useRef<HTMLDivElement>(null)
   const focusFirst = useCallback(() => listRef1.current?.focus(), [])
 
   return (

@@ -69,6 +69,18 @@ export const FederationPerformanceSection: React.FC = () => {
               <li>(4) 부띠끄위원회: 김채영 위원장 시그컵 부띠끄 제작 협조, 종목 운영 협조</li>
               <li>(5) 출판위원회: 이근백 위원장 회지 홍보 및 장세민 부위원장 취재 협조</li>
             </ul>
+            <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="rounded-xl overflow-hidden ring-1 ring-white/10">
+                <video src="/movie.mp4" className="w-full h-48 object-cover" controls poster="/images/sigcup.webp" />
+              </div>
+              <div className="rounded-xl overflow-hidden ring-1 ring-white/10 p-4 flex items-center justify-center">
+                <div className="text-center text-white/85">
+                  <div className="text-sm mb-2">포스터 & 로고 협찬</div>
+                  <div className="text-white">부띠끄위원회 김채영 위원장</div>
+                  <div className="text-white">홍보위원회 문해찬 위원장</div>
+                </div>
+              </div>
+            </div>
           </Card>
         </div>
       </div>

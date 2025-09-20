@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { CategoryChart } from '../ui/CategoryChart';
 import type { Statistics } from '../../utils/statistics';
 
@@ -10,8 +10,8 @@ interface StatisticsSectionProps {
 export const StatisticsSection: React.FC<StatisticsSectionProps> = ({ statistics }) => {
   // sig_list.json을 직접 사용 (member.json 미사용)
   const [sigData, setSigData] = useState<any | null>(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [, setLoading] = useState(false);
+  const [, setError] = useState<string | null>(null);
 
   useEffect(() => {
     let aborted = false;

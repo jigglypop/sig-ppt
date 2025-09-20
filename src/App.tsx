@@ -14,6 +14,7 @@ import FederationIntroSection from './components/sections/FederationIntroSection
 import FederationHistorySection from './components/sections/FederationHistorySection.tsx';
 import FederationPerformanceSection from './components/sections/FederationPerformanceSection.tsx';
 import ChapterHeader from './components/sections/ChapterHeader.tsx';
+import SigWebsitePreviewSection from './components/sections/SigWebsitePreviewSection.tsx';
 // moved above with explicit extensions
 // Slides removed per request
 
@@ -55,6 +56,9 @@ function App() {
       </section>
       <section id="federation-performance">
         <FederationPerformanceSection />
+      </section>
+      <section id="sig-website-preview">
+        <SigWebsitePreviewSection />
       </section>
       <ChapterHeader id="chapter-stats" title="시그현황" subtitle="시그 통계 · 시그 갤러리" />
       <section id="statistics">

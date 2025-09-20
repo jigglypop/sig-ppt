@@ -13,6 +13,7 @@ export const GlobalToc: React.FC = () => {
         { id: 'federation', label: '시그연합회 소개' },
         { id: 'federation-history', label: '연혁' },
         { id: 'federation-performance', label: '출범 후 성과' },
+        { id: 'sig-website-preview', label: '홈페이지 미리보기' },
       ],
     },
     {

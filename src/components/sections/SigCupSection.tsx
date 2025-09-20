@@ -286,7 +286,10 @@ export const SigCupSection: React.FC = () => {
               <h4 className="text-white text-xl sm:text-2xl font-title">SIG CUP 하이라이트</h4>
             </div>
           </div>
-                <div className="flex flex-col sm:flex-row gap-3 justify-center">
+
+          {/* 로고/전단 임시 블록 제거 요청으로 삭제됨 */}
+
+          <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <a
               href="https://www.notion.so/2025-24e1264dbfae808290e9ee10748a0021"
               target="_blank"
