@@ -1,53 +1,40 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { useNetworkStore } from '@/store/networkStore'
 import SigStatisticsChart from '@/components/charts/SigStatisticsChart'
 
 export const SigNetworkSection: React.FC = () => {
-  const {
-    networkData,
-    isLoading,
-    error,
-    setAnalysisResult,
-    setError,
-    setLoading,
-    getChartData,
-  } = useNetworkStore()
+  const [sigData, setSigData] = React.useState<any | null>(null)
+  const [isLoading, setIsLoading] = React.useState<boolean>(false)
+  const [error, setError] = React.useState<string | null>(null)
 
   // Load data once
   useEffect(() => {
-    if (networkData) return
     let aborted = false
     ;(async () => {
       try {
-        setLoading(true)
+        setIsLoading(true)
         setError(null)
-        const res = await fetch('./data/member.json', { cache: 'no-store' })
-        if (!res.ok) throw new Error('member.json 로드 실패')
+        const res = await fetch('./data/sig_list.json', { cache: 'no-store' })
+        if (!res.ok) throw new Error('sig_list.json 로드 실패')
         const data = await res.json()
         if (aborted) return
-        // Keep only nodes with node_type field; links remain
-        if (data && data.network && Array.isArray(data.network.nodes)) {
-          data.network.nodes = data.network.nodes.filter((n: any) => n && n.node_type)
-        }
-        setAnalysisResult(data)
+        setSigData(data)
       } catch (e) {
         if (!aborted) setError(e instanceof Error ? e.message : 'JSON 로드 중 오류')
       } finally {
-        if (!aborted) setLoading(false)
+        if (!aborted) setIsLoading(false)
       }
     })()
     return () => { aborted = true }
-  }, [networkData, setAnalysisResult, setError, setLoading])
+  }, [])
 
-  const chartData = getChartData()
-  const adjustedChartData = React.useMemo(() => {
-    if (!chartData) return null
-    return {
-      ...chartData,
-      overallStats: { ...chartData.overallStats, totalSigs: 31 },
-    }
-  }, [chartData])
-  const sigStats = chartData?.sigStats || []
+  const sigStats = useMemo(() => (sigData?.sigStats || []).map((s: any, idx: number) => ({
+    sigId: String(idx),
+    sigName: s.sigName,
+    totalMembers: s.totalMembers,
+    uniqueMembers: Math.max(0, Math.round(s.totalMembers * (1 - (s.duplicationRate / 100)))),
+    duplicateMembers: Math.round(s.totalMembers * (s.duplicationRate / 100)),
+    duplicationRate: s.duplicationRate,
+  })), [sigData])
   const [query, setQuery] = useState('')
   const filtered = useMemo(() => {
     if (!query) return sigStats
@@ -55,9 +42,7 @@ export const SigNetworkSection: React.FC = () => {
     return sigStats.filter(s => s.sigName.toLowerCase().includes(q))
   }, [sigStats, query])
 
-  const mid = Math.ceil(filtered.length / 2)
-  const page1 = filtered.slice(0, mid)
-  const page2 = filtered.slice(mid)
+  // 단일 리스트 렌더링으로 변경
 
   const listRef1 = useRef<HTMLDivElement>(null)
   const listRef2 = useRef<HTMLDivElement>(null)
@@ -89,9 +74,9 @@ export const SigNetworkSection: React.FC = () => {
               <h3 className="text-3xl font-title mb-4">
                 <span className="text-underline-clean" style={{ "--underline-scale": 1 } as any}>그래프 요약</span>
               </h3>
-              {adjustedChartData ? (
+              {sigData ? (
                 <div className="space-y-8">
-                  <SigStatisticsChart data={adjustedChartData.sigStats} />
+                  <SigStatisticsChart data={sigStats} />
                 </div>
               ) : (
                 <div className="text-gray-400">데이터가 없습니다. public/data/member.json을 확인하세요.</div>
@@ -114,74 +99,43 @@ export const SigNetworkSection: React.FC = () => {
                 />
               </div>
 
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <div className="glass rounded-2xl overflow-hidden">
-                  <div className="grid grid-cols-12 text-white/70 text-xs px-4 py-2 border-b border-white/10 bg-black/20">
-                    <div className="col-span-7">시그명</div>
-                    <div className="col-span-2 text-right">회원수</div>
-                    <div className="col-span-3 text-right">중복률</div>
-                  </div>
-                  <div ref={listRef1} tabIndex={-1} className="max-h-[520px] custom-scroll overflow-auto">
-                    <div className="divide-y divide-white/10">
-                      {page1.map((sig) => (
-                        <div key={sig.sigId} className="w-full px-4 py-3 flex items-center gap-3">
-                          <div className="flex-1 grid grid-cols-12 items-center">
-                            <div className="col-span-7 truncate text-white">{sig.sigName}</div>
-                            <div className="col-span-2 text-right text-white/90">{sig.totalMembers}명</div>
-                            <div className="col-span-3 text-right">
-                              <span className={`px-2 py-1 rounded text-[10px] ${
-                                sig.duplicationRate > 30 ? 'bg-red-500/20 text-red-300' :
-                                sig.duplicationRate > 15 ? 'bg-yellow-500/20 text-yellow-300' :
-                                'bg-green-500/20 text-green-300'
-                              }`}>
-                                {sig.duplicationRate.toFixed(1)}%
-                              </span>
-                            </div>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
+              <div className="glass rounded-2xl overflow-hidden">
+                <div className="grid grid-cols-12 text-white/70 text-xs px-4 py-2 border-b border-white/10 bg-black/20">
+                  <div className="col-span-7">시그명</div>
+                  <div className="col-span-2 text-right">회원수</div>
+                  <div className="col-span-3 text-right">중복률</div>
                 </div>
-
-                <div className="glass rounded-2xl overflow-hidden">
-                  <div className="grid grid-cols-12 text-white/70 text-xs px-4 py-2 border-b border-white/10 bg-black/20">
-                    <div className="col-span-7">시그명</div>
-                    <div className="col-span-2 text-right">회원수</div>
-                    <div className="col-span-3 text-right">중복률</div>
-                  </div>
-                  <div ref={listRef2} className="max-h-[520px] custom-scroll overflow-auto">
-                    <div className="divide-y divide-white/10">
-                      {page2.map((sig) => (
-                        <div key={sig.sigId} className="w-full px-4 py-3 flex items-center gap-3">
-                          <div className="flex-1 grid grid-cols-12 items-center">
-                            <div className="col-span-7 truncate text-white">{sig.sigName}</div>
-                            <div className="col-span-2 text-right text-white/90">{sig.totalMembers}명</div>
-                            <div className="col-span-3 text-right">
-                              <span className={`px-2 py-1 rounded text-[10px] ${
-                                sig.duplicationRate > 30 ? 'bg-red-500/20 text-red-300' :
-                                sig.duplicationRate > 15 ? 'bg-yellow-500/20 text-yellow-300' :
-                                'bg-green-500/20 text-green-300'
-                              }`}>
-                                {sig.duplicationRate.toFixed(1)}%
-                              </span>
-                            </div>
+                <div ref={listRef1} tabIndex={-1} className="max-h-[520px] custom-scroll overflow-auto">
+                  <div className="divide-y divide-white/10">
+                    {filtered.map((sig: any) => (
+                      <div key={sig.sigId} className="w-full px-4 py-3 flex items-center gap-3">
+                        <div className="flex-1 grid grid-cols-12 items-center">
+                          <div className="col-span-7 truncate text-white">{sig.sigName}</div>
+                          <div className="col-span-2 text-right text-white/90">{sig.totalMembers}명</div>
+                          <div className="col-span-3 text-right">
+                            <span className={`px-2 py-1 rounded text-[10px] ${
+                              sig.duplicationRate > 30 ? 'bg-red-500/20 text-red-300' :
+                              sig.duplicationRate > 15 ? 'bg-yellow-500/20 text-yellow-300' :
+                              'bg-green-500/20 text-green-300'
+                            }`}>
+                              {sig.duplicationRate.toFixed(1)}%
+                            </span>
                           </div>
                         </div>
-                      ))}
-                    </div>
+                      </div>
+                    ))}
                   </div>
                 </div>
               </div>
             </section>
 
-            {error && !chartData && (
+            {error && !sigData && (
               <div className="mt-4 text-red-300">{error}</div>
             )}
           </main>
         </div>
 
-        {isLoading && chartData && (
+        {isLoading && sigData && (
           <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-40">
             <div className="glass rounded-2xl p-6">
               <div className="flex items-center gap-4">

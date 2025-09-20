@@ -1,19 +1,37 @@
 import { motion } from 'framer-motion';
-// removed counter; using network overall panel
+import { useEffect, useMemo, useState } from 'react';
 import { CategoryChart } from '../ui/CategoryChart';
-import OverallStatsPanel from '@/components/charts/OverallStatsPanel';
-import { useNetworkStore } from '@/store/networkStore';
 import type { Statistics } from '../../utils/statistics';
-// icons no longer used here
 
 interface StatisticsSectionProps {
   statistics: Statistics;
 }
 
 export const StatisticsSection: React.FC<StatisticsSectionProps> = ({ statistics }) => {
-  // 네트워크 기반 전체 통계 패널로 교체
-  const { getChartData } = useNetworkStore();
-  const chartData = getChartData();
+  // sig_list.json을 직접 사용 (member.json 미사용)
+  const [sigData, setSigData] = useState<any | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    let aborted = false;
+    (async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        const res = await fetch('./data/sig_list.json', { cache: 'no-store' });
+        if (!res.ok) throw new Error('sig_list.json 로드 실패');
+        const data = await res.json();
+        if (aborted) return;
+        setSigData(data);
+      } catch (e) {
+        if (!aborted) setError(e instanceof Error ? e.message : '데이터 로드 중 오류');
+      } finally {
+        if (!aborted) setLoading(false);
+      }
+    })();
+    return () => { aborted = true };
+  }, []);
 
   return (
     <section className="py-20 px-4 relative overflow-hidden">
@@ -74,10 +92,48 @@ export const StatisticsSection: React.FC<StatisticsSectionProps> = ({ statistics
           </h1>
         </motion.div>
 
-        {/* 개요: 네트워크 전체 통계 요약으로 대체 */}
-        {chartData && (
+        {/* 개요: sig_list.json 기반 정확 값 표시 */}
+        {sigData && (
           <div className="mb-10">
-            <OverallStatsPanel data={chartData} />
+            <div className="glass rounded-2xl p-6">
+              <h3 className="text-2xl font-title mb-4 text-white">
+                <span className="text-underline-clean" style={{ "--underline-scale": 1 } as any}>전체 통계</span>
+              </h3>
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
+                <div className="text-center">
+                  <div className="text-3xl font-bold text-white">{sigData.overallStats.totalSigs}</div>
+                  <div className="text-white/70 text-sm mt-1">전체 시그</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-3xl font-bold text-white">{sigData.overallStats.totalUnique}</div>
+                  <div className="text-white/70 text-sm mt-1">고유 회원</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-3xl font-bold text-white">{sigData.overallStats.totalDuplicates}</div>
+                  <div className="text-white/70 text-sm mt-1">중복 회원</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-3xl font-bold text-white">{sigData.overallStats.averageDuplicationRate}%</div>
+                  <div className="text-white/70 text-sm mt-1">평균 중복률</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-3xl font-bold text-white">{sigData.overallStats.duplicateJoinRate}%</div>
+                  <div className="text-white/70 text-sm mt-1">중복 가입률</div>
+                </div>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
+                <div className="glass rounded-xl p-4">
+                  <h4 className="text-lg font-semibold text-white mb-1">시그별 평균 회원 수</h4>
+                  <p className="text-2xl font-bold text-cyan-400">{sigData.overallStats.averageMembersPerSig}명</p>
+                  <p className="text-sm text-white/60 mt-1">시그당 평균 74~75명의 회원 보유</p>
+                </div>
+                <div className="glass rounded-xl p-4">
+                  <h4 className="text-lg font-semibold text-white mb-1">평균 중복 가입 수</h4>
+                  <p className="text-2xl font-bold text-pink-400">{sigData.overallStats.averageDuplicationsPerDuplicate}개</p>
+                  <p className="text-sm text-white/60 mt-1">중복 회원은 평균적으로 3개 이상의 시그에 가입</p>
+                </div>
+              </div>
+            </div>
           </div>
         )}
 
@@ -88,7 +144,7 @@ export const StatisticsSection: React.FC<StatisticsSectionProps> = ({ statistics
           </h2>
         </div>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          <CategoryChart data={statistics.categoryCounts} />
+          <CategoryChart data={(sigData?.categories || []).map((c: any) => ({ category: c.name, name: c.name, count: c.percentage, icon: '' }))} />
           
           {/* Top Categories */}
           <motion.div

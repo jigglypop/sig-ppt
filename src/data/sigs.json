@@ -336,6 +336,17 @@
       "image": "보드게임.jpg",
       "joinLink": null,
       "color": "#6366F1"
+    },
+    {
+      "id": "dyslexia",
+      "name": "난독증",
+      "fullName": "독서 시그",
+      "leader": "이동훈",
+      "description": "#읽기 힘들다면 같이 읽어요.\n멘사 독서시그 [난독증] 입니다.\n\n매주 독서모임(북클럽)을 진행하며\n책을 통해서 소통과 교류, 나눔과 성장을 목표합니다.\n\n가입신청 문의 : https://open.kakao.com/o/sSSXsASh",
+      "category": "study",
+      "image": "sigcup.webp",
+      "joinLink": "https://open.kakao.com/o/sSSXsASh",
+      "color": "#6366F1"
     }
   ],
   "categories": {

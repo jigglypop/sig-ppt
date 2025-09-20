@@ -14,43 +14,17 @@ import FederationIntroSection from './components/sections/FederationIntroSection
 import FederationHistorySection from './components/sections/FederationHistorySection.tsx';
 import FederationPerformanceSection from './components/sections/FederationPerformanceSection.tsx';
 import ChapterHeader from './components/sections/ChapterHeader.tsx';
-import { useNetworkStore } from '@/store/networkStore'
 // moved above with explicit extensions
 // Slides removed per request
 
 function App() {
   const [statistics, setStatistics] = useState<ReturnType<typeof generateStatistics> | null>(null);
   // poster mode disabled
-  const { networkData, setAnalysisResult, setError, setLoading } = useNetworkStore()
 
   useEffect(() => {
     const stats = generateStatistics(sigData.sigs, sigData.categories);
     setStatistics(stats);
   }, []);
-  // 전역 네트워크 데이터 로드 (중복 방지: 이미 로드됐으면 skip)
-  useEffect(() => {
-    if (networkData) return;
-    let aborted = false;
-    (async () => {
-      try {
-        setLoading(true);
-        setError(null);
-        const res = await fetch('./data/member.json', { cache: 'no-store' });
-        if (!res.ok) throw new Error('member.json 로드 실패');
-        const data = await res.json();
-        if (aborted) return;
-        if (data && data.network && Array.isArray(data.network.nodes)) {
-          data.network.nodes = data.network.nodes.filter((n: any) => n && n.node_type);
-        }
-        setAnalysisResult(data);
-      } catch (e) {
-        if (!aborted) setError(e instanceof Error ? e.message : 'JSON 로드 중 오류');
-      } finally {
-        if (!aborted) setLoading(false);
-      }
-    })();
-    return () => { aborted = true };
-  }, [networkData, setAnalysisResult, setError, setLoading]);
 
   // URL poster mode disabled
 
