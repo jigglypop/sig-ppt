@@ -71,11 +71,22 @@ export const HeroSection: React.FC = () => {
                 transition={{ delay: 1.2, duration: 1 }}
                 style={{ "--underline-scale": 0 } as any}
               >
-                멘사코리아 시그연합회 소개
+                멘사코리아
               </motion.span>
               <br />
             </h1>
-            
+            <h1 className="relative text-5xl sm:text-7xl md:text-9xl">
+              <motion.span 
+                className="font-title text-underline-clean"
+                initial={{ "--underline-scale": 0 }}
+                animate={{ "--underline-scale": 1 }}
+                transition={{ delay: 1.2, duration: 1 }}
+                style={{ "--underline-scale": 0 } as any}
+              >
+                시그소개
+              </motion.span>
+              <br />
+            </h1>
           </motion.div>
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
