@@ -1,7 +1,8 @@
 import { motion } from 'framer-motion';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, type CSSProperties } from 'react';
 import { CategoryChart } from '../ui/CategoryChart';
 import type { Statistics } from '../../utils/statistics';
+import type { SigListCategoryStat, SigListData } from '../../types/sig';
 
 interface StatisticsSectionProps {
   statistics: Statistics;
@@ -9,7 +10,7 @@ interface StatisticsSectionProps {
 
 export const StatisticsSection: React.FC<StatisticsSectionProps> = ({ statistics }) => {
   // sig_list.json을 직접 사용 (member.json 미사용)
-  const [sigData, setSigData] = useState<any | null>(null);
+  const [sigData, setSigData] = useState<SigListData | null>(null);
   const [, setLoading] = useState(false);
   const [, setError] = useState<string | null>(null);
 
@@ -35,20 +36,8 @@ export const StatisticsSection: React.FC<StatisticsSectionProps> = ({ statistics
 
   return (
     <section className="py-20 px-4 relative overflow-hidden">
-      {/* Background Video */}
-      <video
-        className="absolute inset-0 w-full h-full object-cover opacity-30 pointer-events-none"
-        src="/movie.mp4"
-        autoPlay
-        muted
-        loop
-        playsInline
-        poster="/images/sigcup.webp"
-        aria-hidden="true"
-      />
-      
       {/* Background Effects */}
-      <div className="absolute inset-0 bg-gradient-to-br from-black/70 via-purple-900/50 to-black/70" />
+      <div className="absolute inset-0 bg-gradient-to-br from-black/80 via-purple-900/40 to-black/80" />
       <div className="absolute inset-0 pointer-events-none">
         {[...Array(10)].map((_, i) => (
           <motion.div
@@ -84,11 +73,10 @@ export const StatisticsSection: React.FC<StatisticsSectionProps> = ({ statistics
               initial={{ "--underline-scale": 0 }}
               animate={{ "--underline-scale": 1 }}
               transition={{ delay: 1.2, duration: 1 }}
-              style={{ "--underline-scale": 0 } as any}
+              style={{ "--underline-scale": 0 } as CSSProperties}
             >
               시그 현황
             </motion.span>
-            <br />
           </h1>
         </motion.div>
 
@@ -97,7 +85,7 @@ export const StatisticsSection: React.FC<StatisticsSectionProps> = ({ statistics
           <div className="mb-10">
             <div className="glass rounded-2xl p-6">
               <h3 className="text-2xl font-title mb-4 text-white">
-                <span className="text-underline-clean" style={{ "--underline-scale": 1 } as any}>전체 통계</span>
+                <span className="text-underline-clean" style={{ "--underline-scale": 1 } as CSSProperties}>전체 통계</span>
               </h3>
               <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
                 <div className="text-center">
@@ -140,11 +128,18 @@ export const StatisticsSection: React.FC<StatisticsSectionProps> = ({ statistics
         {/* 카테고리 분포 */}
         <div className="mb-4 px-4">
           <h2 className="text-3xl font-title">
-            <span className="text-underline-clean" style={{ "--underline-scale": 1 } as any}>카테고리 분포</span>
+            <span className="text-underline-clean" style={{ "--underline-scale": 1 } as CSSProperties}>카테고리 분포</span>
           </h2>
         </div>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          <CategoryChart data={(sigData?.categories || []).map((c: any) => ({ category: c.name, name: c.name, count: c.percentage, icon: '' }))} />
+          <CategoryChart
+            data={(sigData?.categories || []).map((c: SigListCategoryStat) => ({
+              category: c.name,
+              name: c.name,
+              count: c.percentage,
+              icon: '',
+            }))}
+          />
           
           {/* Top Categories */}
           <motion.div
@@ -156,10 +151,10 @@ export const StatisticsSection: React.FC<StatisticsSectionProps> = ({ statistics
                   <h3 className="text-3xl font-title mb-4 text-white">
         <motion.span
           className="text-underline-clean"
-          initial={{ "--underline-scale": 0 } as any}
-          whileInView={{ "--underline-scale": 1 } as any}
+          initial={{ "--underline-scale": 0 }}
+          whileInView={{ "--underline-scale": 1 }}
           transition={{ duration: 0.9 }}
-          style={{ "--underline-scale": 0 } as any}
+          style={{ "--underline-scale": 0 } as CSSProperties}
         >
          인기 카테고리 TOP5
         </motion.span>

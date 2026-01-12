@@ -17,7 +17,6 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({ onNavigate }) => {
     { id: 'statistics', label: '시그 현황' },
     { id: 'network', label: '네트워크' },
     { id: 'gallery', label: '시그 갤러리' },
-    { id: 'sigcup', label: '시그컵' },
   ];
 
   const handleNavigate = (section: string) => {
@@ -29,7 +28,7 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({ onNavigate }) => {
     <>
       {/* Mobile Menu Button */}
       <motion.button
-        className="fixed top-4 right-4 z-50 sm:hidden p-3 btn-ghost rounded-full"
+        className="fixed top-4 right-4 z-50 md:hidden btn btn-ghost p-3 rounded-full"
         whileTap={{ scale: 0.95 }}
         onClick={() => setIsOpen(!isOpen)}
       >
@@ -68,7 +67,7 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({ onNavigate }) => {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.3 }}
-              className="fixed inset-0 bg-black/80 backdrop-blur-sm z-40 sm:hidden"
+              className="fixed inset-0 bg-black/80 backdrop-blur-sm z-40 md:hidden"
               onClick={() => setIsOpen(false)}
             />
 
@@ -78,7 +77,7 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({ onNavigate }) => {
               animate={{ x: 0 }}
               exit={{ x: '100%' }}
               transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-              className="fixed right-0 top-0 h-full w-3/4 max-w-sm glass-dark z-40 sm:hidden"
+              className="fixed right-0 top-0 h-full w-3/4 max-w-sm glass-dark z-40 md:hidden"
             >
               <nav className="flex flex-col p-8 pt-20">
                 {menuItems.map((item, index) => (

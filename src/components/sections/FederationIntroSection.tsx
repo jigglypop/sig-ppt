@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react'
+import type { CSSProperties, ReactNode } from 'react'
 import { motion } from 'framer-motion'
 
 interface LeaderCardProps {
@@ -17,7 +17,7 @@ const LeaderCard: React.FC<LeaderCardProps> = ({ name, lines }) => {
       <div className="absolute inset-0 grad-soft opacity-40 group-hover:opacity-60 transition-opacity rounded-3xl" />
       <div className="relative glass rounded-3xl overflow-hidden p-8">
         <h4 className="text-3xl md:text-4xl font-title mb-4">
-          <span className="text-underline-clean" style={{ "--underline-scale": 1 } as any}>{name}</span>
+          <span className="text-underline-clean" style={{ "--underline-scale": 1 } as CSSProperties}>{name}</span>
         </h4>
         <div className="space-y-2 text-lg">
           {lines.map((node, i) => (
@@ -44,11 +44,10 @@ export const FederationIntroSection: React.FC = () => {
               initial={{ "--underline-scale": 0 }}
               whileInView={{ "--underline-scale": 1 }}
               transition={{ duration: 0.9 }}
-              style={{ "--underline-scale": 0 } as any}
+              style={{ "--underline-scale": 0 } as CSSProperties}
             >
               시그연합회 소개
             </motion.span>
-            <br />
           </h2>
         </div>
 

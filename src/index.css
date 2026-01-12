@@ -476,54 +476,66 @@ html {
 .at-11 { position: absolute; top: 12%; left: 18%; }
 
 /* Common buttons */
-.btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  padding: 0.625rem 1rem;
-  border-radius: 0.75rem;
-  border: 1px solid rgba(255,255,255,0.14);
-  color: #fff;
-  background: rgba(255,255,255,0.06);
-  transition: background 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
-  cursor: pointer;
-}
-.btn:hover { 
-  background: rgba(255,255,255,0.12); 
-  cursor: pointer;
-}
-.btn:active { transform: translateY(1px); }
-.btn-primary { 
-  background: linear-gradient(135deg, #feac5e 0%, #c779d0 50%, #4bc0c8 100%); 
-  color: #fff; 
-  border-color: rgba(255,255,255,0.2);
-  cursor: pointer;
-}
-.btn-primary:hover { 
-  filter: brightness(1.1); 
-  cursor: pointer;
-}
-.btn-ghost { 
-  background: transparent; 
-  border-color: rgba(255,255,255,0.18);
-  cursor: pointer;
-}
-.btn-ghost:hover { 
-  background: rgba(255,255,255,0.06);
-  cursor: pointer;
-}
-.btn-brand {
-  background: linear-gradient(135deg, #feac5e 0%, #c779d0 50%, #4bc0c8 100%);
-  color: #fff;
-  font-weight: 600;
-  border: none;
-  cursor: pointer;
-}
-.btn-brand:hover {
-  opacity: 0.9;
-  box-shadow: 0 10px 25px rgba(254,172,94,0.3);
-  cursor: pointer;
+@layer components {
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.625rem 1rem;
+    border-radius: 0.75rem;
+    border: 1px solid rgba(255,255,255,0.14);
+    color: #fff;
+    background: rgba(255,255,255,0.06);
+    text-decoration: none;
+    -webkit-tap-highlight-color: transparent;
+    transition: background 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+    cursor: pointer;
+  }
+  .btn:hover {
+    background: rgba(255,255,255,0.12);
+  }
+  .btn:active {
+    transform: translateY(1px);
+  }
+  .btn:focus-visible {
+    outline: 2px solid rgba(199,121,208,0.7);
+    outline-offset: 2px;
+  }
+  .btn:disabled,
+  .btn[aria-disabled="true"] {
+    opacity: 0.55;
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  .btn-primary {
+    background: linear-gradient(135deg, #feac5e 0%, #c779d0 50%, #4bc0c8 100%);
+    color: #fff;
+    border-color: rgba(255,255,255,0.2);
+  }
+  .btn-primary:hover {
+    filter: brightness(1.08);
+  }
+
+  .btn-ghost {
+    background: transparent;
+    border-color: rgba(255,255,255,0.18);
+  }
+  .btn-ghost:hover {
+    background: rgba(255,255,255,0.06);
+  }
+
+  .btn-brand {
+    background: linear-gradient(135deg, #feac5e 0%, #c779d0 50%, #4bc0c8 100%);
+    color: #fff;
+    font-weight: 600;
+    border-color: rgba(255,255,255,0.18);
+  }
+  .btn-brand:hover {
+    opacity: 0.92;
+    box-shadow: 0 10px 25px rgba(254,172,94,0.3);
+  }
 }
 
 /* Category tags */

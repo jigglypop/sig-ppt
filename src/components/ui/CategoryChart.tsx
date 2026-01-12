@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState, type CSSProperties } from 'react';
 
 interface CategoryChartProps {
   data: { category: string; count: number; name: string; icon: string }[];
@@ -38,9 +38,8 @@ export const CategoryChart: React.FC<CategoryChartProps> = ({ data }) => {
       setBounds({ width: rect.width, height: rect.height });
     };
     update();
-    const RO: any = (window as any).ResizeObserver;
-    const ro = RO ? new RO(update) : null;
-    if (ro) ro.observe(el as Element);
+    const ro = typeof ResizeObserver === 'undefined' ? null : new ResizeObserver(update);
+    if (ro) ro.observe(el);
     window.addEventListener('resize', update);
     return () => {
       if (ro) ro.disconnect();
@@ -54,8 +53,20 @@ export const CategoryChart: React.FC<CategoryChartProps> = ({ data }) => {
   const innerRadius = Math.floor(outerRadius * 0.4);
 
   const RADIAN = Math.PI / 180;
-  const renderInsideLabel = (props: any) => {
-    const { cx, cy, midAngle, innerRadius: ir, outerRadius: or, name, percent } = props;
+  type InsideLabelProps = {
+    cx: number;
+    cy: number;
+    midAngle: number;
+    innerRadius: number;
+    outerRadius: number;
+    name: string;
+    percent: number;
+  };
+  const renderInsideLabel = (props: unknown) => {
+    const { cx, cy, midAngle, innerRadius: ir, outerRadius: or, name, percent } = props as Partial<InsideLabelProps>;
+    if (cx == null || cy == null || midAngle == null || ir == null || or == null || name == null || percent == null) {
+      return null;
+    }
     const r = ir + (or - ir) * 0.55;
     const x = cx + r * Math.cos(-midAngle * RADIAN);
     const y = cy + r * Math.sin(-midAngle * RADIAN);
@@ -79,10 +90,10 @@ export const CategoryChart: React.FC<CategoryChartProps> = ({ data }) => {
       <h3 className="text-3xl font-title mb-4 text-white">
         <motion.span
           className="text-underline-clean"
-          initial={{ "--underline-scale": 0 } as any}
-          whileInView={{ "--underline-scale": 1 } as any}
+          initial={{ "--underline-scale": 0 }}
+          whileInView={{ "--underline-scale": 1 }}
           transition={{ duration: 0.9 }}
-          style={{ "--underline-scale": 0 } as any}
+          style={{ "--underline-scale": 0 } as CSSProperties}
         >
           카테고리별 시그 분포
         </motion.span>
@@ -109,7 +120,6 @@ export const CategoryChart: React.FC<CategoryChartProps> = ({ data }) => {
             isAnimationActive
             animationBegin={0}
             animationDuration={1100}
-            cursor={{ fill: 'rgba(255,255,255,0.06)' } as any}
           >
             {chartData.map((entry, index) => (
               <Cell key={`cell-${index}`} fill={`url(#${entry.gradientId})`} stroke="rgba(255,255,255,0.35)" strokeWidth={1} />

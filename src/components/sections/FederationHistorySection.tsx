@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion'
+import type { CSSProperties } from 'react'
 
 export const FederationHistorySection: React.FC = () => {
   const items = [
@@ -21,11 +22,10 @@ export const FederationHistorySection: React.FC = () => {
               initial={{ "--underline-scale": 0 }}
               whileInView={{ "--underline-scale": 1 }}
               transition={{ duration: 0.9 }}
-              style={{ "--underline-scale": 0 } as any}
+              style={{ "--underline-scale": 0 } as CSSProperties}
             >
               시그연합회 연혁
             </motion.span>
-            <br />
           </h2>
         </div>
 

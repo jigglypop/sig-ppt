@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import type { CSSProperties } from 'react';
 
 export const HeroSection: React.FC = () => {
 
@@ -69,11 +70,10 @@ export const HeroSection: React.FC = () => {
                 initial={{ "--underline-scale": 0 }}
                 animate={{ "--underline-scale": 1 }}
                 transition={{ delay: 1.2, duration: 1 }}
-                style={{ "--underline-scale": 0 } as any}
+                style={{ "--underline-scale": 0 } as CSSProperties}
               >
                 멘사코리아
               </motion.span>
-              <br />
             </h1>
             <h1 className="relative text-5xl sm:text-7xl md:text-9xl">
               <motion.span 
@@ -81,11 +81,10 @@ export const HeroSection: React.FC = () => {
                 initial={{ "--underline-scale": 0 }}
                 animate={{ "--underline-scale": 1 }}
                 transition={{ delay: 1.2, duration: 1 }}
-                style={{ "--underline-scale": 0 } as any}
+                style={{ "--underline-scale": 0 } as CSSProperties}
               >
                 시그소개
               </motion.span>
-              <br />
             </h1>
           </motion.div>
           {/* CTA Buttons */}
@@ -109,9 +108,9 @@ export const HeroSection: React.FC = () => {
             className="grid grid-cols-3 gap-8 max-w-2xl mx-auto mt-16"
           >
             {[
-              { number: "31+", label: "활동 시그" },
-              { number: "983+", label: "활동 멤버" },
-              { number: "15+", label: "카테고리" }
+              { number: "39", label: "활동 시그" },
+              { number: "2,970", label: "시그 가입" },
+              { number: "15", label: "카테고리" }
             ].map((stat, index) => (
               <motion.div
                 key={stat.label}

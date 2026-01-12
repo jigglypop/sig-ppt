@@ -23,3 +23,31 @@ export interface SigData {
   sigs: Sig[];
   categories: Record<string, Category>;
 }
+
+export interface SigListOverallStats {
+  totalSigs: number;
+  totalUnique: number;
+  totalDuplicates: number;
+  averageDuplicationRate: number;
+  duplicateJoinRate: number;
+  averageMembersPerSig: number;
+  averageDuplicationsPerDuplicate: number;
+  totalMembers: number;
+}
+
+export interface SigListSigStat {
+  sigName: string;
+  totalMembers: number;
+  duplicationRate: number;
+}
+
+export interface SigListCategoryStat {
+  name: string;
+  percentage: number;
+}
+
+export interface SigListData {
+  overallStats: SigListOverallStats;
+  sigStats: SigListSigStat[];
+  categories: SigListCategoryStat[];
+}

@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, type CSSProperties } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { createPortal } from 'react-dom';
 import type { Sig, Category } from '../../types/sig';
@@ -70,18 +70,17 @@ export const SigCard: React.FC<SigCardProps> = ({ sig, category }) => {
           </div>
 
           <div className="flex-1 min-w-0">
-            <h1 className="relative text-3xl sm:text-4xl md:text-5xl">
+            <h3 className="relative text-2xl sm:text-3xl font-title leading-tight break-keep">
             <motion.span 
               className="font-title text-underline-clean"
               initial={{ "--underline-scale": 0 }}
               animate={{ "--underline-scale": 1 }}
               transition={{ delay: 1.2, duration: 1 }}
-              style={{ "--underline-scale": 0 } as any}
+              style={{ "--underline-scale": 0 } as CSSProperties}
             >
               {sig.name}
             </motion.span>
-            <br />
-          </h1>
+          </h3>
             <div className="mt-2 flex flex-wrap items-center gap-2">
               <span className={`tag tag-${sig.category}`}>
                 {category.name}
@@ -107,7 +106,7 @@ export const SigCard: React.FC<SigCardProps> = ({ sig, category }) => {
           </div>
           <div className="flex items-center gap-2">
             {sig.email && (
-              <a href={`mailto:${sig.email}`} className="btn-ghost text-xs">
+              <a href={`mailto:${sig.email}`} className="btn btn-ghost text-xs">
                 <Mail className="w-4 h-4" /> 메일
               </a>
             )}
@@ -116,7 +115,7 @@ export const SigCard: React.FC<SigCardProps> = ({ sig, category }) => {
                 href={`https://instagram.com/${sig.instagram}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="btn-ghost text-xs"
+                className="btn btn-ghost text-xs"
               >
                 <Instagram className="w-4 h-4" /> 인스타
               </a>
@@ -134,15 +133,15 @@ export const SigCard: React.FC<SigCardProps> = ({ sig, category }) => {
           </div>
         </div>
 
-        <div className="mt-3 flex gap-2">
-          <button onClick={() => setIsDetailOpen(true)} className="flex-1 btn btn-ghost">
+        <div className="mt-3 grid grid-cols-2 gap-2">
+          <button onClick={() => setIsDetailOpen(true)} className="btn btn-ghost col-span-2 w-full">
             자세히 보기
           </button>
           <a
             href={`https://www.mensakorea.org/bbs/write.php?bo_table=sig_request&sig_id=sig_${sig.id}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="btn btn-brand px-4"
+            className="btn btn-brand w-full"
           >
             가입신청
           </a>
@@ -150,7 +149,7 @@ export const SigCard: React.FC<SigCardProps> = ({ sig, category }) => {
             href={`https://www.mensakorea.org/bbs/board.php?bo_table=sig&wr_id=${sig.id}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="btn btn-ghost px-4"
+            className="btn btn-ghost w-full"
           >
             공식정보
           </a>
@@ -191,7 +190,7 @@ export const SigCard: React.FC<SigCardProps> = ({ sig, category }) => {
                           <p className="text-gray-400 text-xs sm:text-sm truncate">#{category.name} · 시그장 {sig.leader}</p>
                         </div>
                       </div>
-                      <button onClick={() => setIsDetailOpen(false)} className="btn-ghost text-sm" aria-label="닫기">
+                      <button onClick={() => setIsDetailOpen(false)} className="btn btn-ghost text-sm" aria-label="닫기">
                         닫기
                       </button>
                     </div>
@@ -209,7 +208,7 @@ export const SigCard: React.FC<SigCardProps> = ({ sig, category }) => {
                           </a>
                         )}
                         {sig.instagram && (
-                          <a href={`https://instagram.com/${sig.instagram}`} target="_blank" rel="noopener noreferrer" className="btn-ghost text-sm">
+                          <a href={`https://instagram.com/${sig.instagram}`} target="_blank" rel="noopener noreferrer" className="btn btn-ghost text-sm">
                             <Instagram className="w-4 h-4" /> 인스타
                           </a>
                         )}

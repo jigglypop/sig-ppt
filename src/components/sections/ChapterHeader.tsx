@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion'
+import type { CSSProperties } from 'react'
 
 interface ChapterHeaderProps {
   title: string
@@ -19,7 +20,7 @@ export const ChapterHeader: React.FC<ChapterHeaderProps> = ({ title, subtitle, i
           transition={{ duration: 0.6 }}
           className="text-5xl sm:text-6xl md:text-7xl font-title mb-4"
         >
-          <span className="text-underline-clean" style={{ "--underline-scale": 1 } as any}>{title}</span>
+          <span className="text-underline-clean" style={{ "--underline-scale": 1 } as CSSProperties}>{title}</span>
         </motion.h2>
         {subtitle && (
           <motion.p

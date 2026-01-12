@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, type CSSProperties } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { SigCard } from './SigCard';
 import type { Sig, Category } from '../../types/sig';
@@ -45,11 +45,10 @@ export const SigGallery: React.FC<SigGalleryProps> = ({ sigs, categories }) => {
               initial={{ "--underline-scale": 0 }}
               animate={{ "--underline-scale": 1 }}
               transition={{ delay: 1.2, duration: 1 }}
-              style={{ "--underline-scale": 0 } as any}
+              style={{ "--underline-scale": 0 } as CSSProperties}
             >
               시그 갤러리
             </motion.span>
-            <br />
           </h1>
           <p className="text-gray-300 text-base sm:text-lg px-4">관심사에 맞는 시그를 찾아보세요</p>
         </motion.div>
@@ -101,7 +100,7 @@ export const SigGallery: React.FC<SigGalleryProps> = ({ sigs, categories }) => {
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     onClick={() => setSelectedCategory('all')}
-                    className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
+                    className={`btn px-4 py-2 rounded-full text-sm font-medium transition-all ${
                       selectedCategory === 'all'
                         ? 'glass-light text-white ring-2 ring-purple-500/50'
                         : 'btn-ghost text-gray-300 hover:text-white'
@@ -117,7 +116,7 @@ export const SigGallery: React.FC<SigGalleryProps> = ({ sigs, categories }) => {
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
                         onClick={() => setSelectedCategory(category.key)}
-                        className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
+                        className={`btn px-4 py-2 rounded-full text-sm font-medium transition-all ${
                           selectedCategory === category.key
                             ? 'glass-light text-white ring-2 ring-purple-500/50'
                             : 'btn-ghost text-gray-300 hover:text-white'

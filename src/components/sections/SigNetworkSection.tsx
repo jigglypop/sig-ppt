@@ -1,10 +1,19 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import SigStatisticsChart from '@/components/charts/SigStatisticsChart'
+import React, { type CSSProperties, useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import type { SigListData, SigListSigStat } from '../../types/sig'
+
+type SigRow = {
+  sigId: string
+  sigName: string
+  totalMembers: number
+  uniqueMembers: number
+  duplicateMembers: number
+  duplicationRate: number
+}
 
 export const SigNetworkSection: React.FC = () => {
-  const [sigData, setSigData] = React.useState<any | null>(null)
-  const [isLoading, setIsLoading] = React.useState<boolean>(false)
-  const [error, setError] = React.useState<string | null>(null)
+  const [sigData, setSigData] = useState<SigListData | null>(null)
+  const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
   // Load data once
   useEffect(() => {
@@ -27,26 +36,27 @@ export const SigNetworkSection: React.FC = () => {
     return () => { aborted = true }
   }, [])
 
-  const sigStats = useMemo(() => (sigData?.sigStats || []).map((s: any, idx: number) => ({
-    sigId: String(idx),
-    sigName: s.sigName,
-    totalMembers: s.totalMembers,
-    uniqueMembers: Math.max(0, Math.round(s.totalMembers * (1 - (s.duplicationRate / 100)))),
-    duplicateMembers: Math.round(s.totalMembers * (s.duplicationRate / 100)),
-    duplicationRate: s.duplicationRate,
-  })), [sigData])
+  const sigStats = useMemo<SigRow[]>(
+    () =>
+      (sigData?.sigStats ?? []).map((s: SigListSigStat, idx: number) => ({
+        sigId: String(idx),
+        sigName: s.sigName,
+        totalMembers: s.totalMembers,
+        uniqueMembers: Math.max(0, Math.round(s.totalMembers * (1 - s.duplicationRate / 100))),
+        duplicateMembers: Math.round(s.totalMembers * (s.duplicationRate / 100)),
+        duplicationRate: s.duplicationRate,
+      })),
+    [sigData],
+  )
   const [query, setQuery] = useState('')
   const filtered = useMemo(() => {
     if (!query) return sigStats
     const q = query.toLowerCase()
-    return sigStats.filter((s: any) => s.sigName.toLowerCase().includes(q))
+    return sigStats.filter((s) => s.sigName.toLowerCase().includes(q))
   }, [sigStats, query])
 
-  // 단일 리스트 렌더링으로 변경
-
-  const listRef1 = useRef<HTMLDivElement>(null)
-  // const listRef2 = useRef<HTMLDivElement>(null)
-  const focusFirst = useCallback(() => listRef1.current?.focus(), [])
+  const listRef = useRef<HTMLDivElement>(null)
+  const focusFirst = useCallback(() => listRef.current?.focus(), [])
 
   return (
     <div className="py-20 relative overflow-hidden">
@@ -57,36 +67,10 @@ export const SigNetworkSection: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 relative">
         <div className="grid grid-cols-12 gap-6">
           <main className="col-span-12 space-y-12">
-            <div>
-              <h2 className="relative text-3xl sm:text-4xl md:text-5xl">
-                <span 
-                  className="font-title text-underline-clean"
-                  style={{ "--underline-scale": 1 } as any}
-                >
-                  그래프 요약
-                </span>
-                <br />
-              </h2>
-            </div>
-
-            {/* Page 2: Charts */}
-            <section id="net-charts" className="scroll-mt-24">
-              <h3 className="text-3xl font-title mb-4">
-                <span className="text-underline-clean" style={{ "--underline-scale": 1 } as any}>그래프 요약</span>
-              </h3>
-              {sigData ? (
-                <div className="space-y-8">
-                  <SigStatisticsChart data={sigStats} />
-                </div>
-              ) : (
-                <div className="text-gray-400">데이터가 없습니다. public/data/member.json을 확인하세요.</div>
-              )}
-            </section>
-
-            {/* Page 3: List */}
+            {/* List */}
             <section id="net-list" className="scroll-mt-24">
               <h3 className="text-3xl font-title mb-4">
-                <span className="text-underline-clean" style={{ "--underline-scale": 1 } as any}>시그 목록</span>
+                <span className="text-underline-clean" style={{ "--underline-scale": 1 } as CSSProperties}>시그 목록</span>
               </h3>
               <div className="flex items-center justify-between gap-4 mb-3">
                 <div className="text-sm text-white/80">총 {filtered.length}개</div>
@@ -105,9 +89,9 @@ export const SigNetworkSection: React.FC = () => {
                   <div className="col-span-2 text-right">회원수</div>
                   <div className="col-span-3 text-right">중복률</div>
                 </div>
-                <div ref={listRef1} tabIndex={-1} className="max-h-[520px] custom-scroll overflow-auto">
+                <div ref={listRef} tabIndex={-1} className="max-h-[520px] custom-scroll overflow-auto">
                   <div className="divide-y divide-white/10">
-                    {filtered.map((sig: any) => (
+                    {filtered.map((sig) => (
                       <div key={sig.sigId} className="w-full px-4 py-3 flex items-center gap-3">
                         <div className="flex-1 grid grid-cols-12 items-center">
                           <div className="col-span-7 truncate text-white">{sig.sigName}</div>
