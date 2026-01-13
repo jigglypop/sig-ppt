@@ -15,6 +15,11 @@ export const SigCard: React.FC<SigCardProps> = ({ sig, category }) => {
   const [isLowRes, setIsLowRes] = useState(false);
   const [isDetailOpen, setIsDetailOpen] = useState(false);
 
+  const requestId = sig.requestId ?? sig.id
+  const officialUrl = sig.wrId
+    ? `https://www.mensakorea.org/bbs/board.php?bo_table=sig&wr_id=${sig.wrId}`
+    : null
+
   const handleImageLoad = useCallback((e: React.SyntheticEvent<HTMLImageElement>) => {
     const img = e.currentTarget as HTMLImageElement;
     const { naturalWidth, naturalHeight } = img;
@@ -138,21 +143,23 @@ export const SigCard: React.FC<SigCardProps> = ({ sig, category }) => {
             자세히 보기
           </button>
           <a
-            href={`https://www.mensakorea.org/bbs/write.php?bo_table=sig_request&sig_id=sig_${sig.id}`}
+            href={`https://www.mensakorea.org/bbs/write.php?bo_table=sig_request&sig_id=sig_${requestId}`}
             target="_blank"
             rel="noopener noreferrer"
             className="btn btn-brand w-full"
           >
             가입신청
           </a>
-          <a
-            href={`https://www.mensakorea.org/bbs/board.php?bo_table=sig&wr_id=${sig.id}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="btn btn-ghost w-full"
-          >
-            공식정보
-          </a>
+          {officialUrl && (
+            <a
+              href={officialUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn btn-ghost w-full"
+            >
+              공식정보
+            </a>
+          )}
         </div>
       </div>
 

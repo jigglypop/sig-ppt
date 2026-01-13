@@ -5,7 +5,7 @@ export const FederationHistorySection: React.FC = () => {
   const items = [
     { title: '출범', date: '5.17', desc: '시그연합회 공식 출범 및 운영 개시' },
     { title: '시그 규정 개정', date: '7.30', desc: '시그 운영 규정 정비 및 개정안 공표' },
-    { title: '시그장 회의', date: '9.27 예정', desc: '정기 시그장 회의(안건: 운영/행사/협력안)' },
+    { title: '시그장 회의', date: '', desc: '정기 시그장 회의(안건: 운영/행사/협력안)' },
   ]
 
   return (
@@ -46,18 +46,24 @@ export const FederationHistorySection: React.FC = () => {
             </ol>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="glass rounded-2xl p-6">
-              <p className="text-white/70 text-sm">현재 시그 수</p>
-              <p className="text-3xl font-bold">31</p>
-            </div>
-            <div className="glass rounded-2xl p-6">
-              <p className="text-white/70 text-sm">현재 시그장 수</p>
-              <p className="text-3xl font-bold">31</p>
-            </div>
-            <div className="glass rounded-2xl p-6">
-              <p className="text-white/70 text-sm">주요 행사</p>
-              <p className="text-3xl font-bold">시그장 회의</p>
+          <div className="glass rounded-3xl p-8">
+            <h3 className="text-2xl font-title mb-4 text-white">
+              <span className="text-underline-clean" style={{ "--underline-scale": 1 } as CSSProperties}>시그 만드는 법</span>
+            </h3>
+            <ol className="list-decimal list-inside space-y-2 text-white/90">
+              <li>오프라인 모임 사진 작성</li>
+              <li>온라인 카톡 개설 후 사진 캡쳐</li>
+              <li>시그개설신청 게시판에 신청</li>
+            </ol>
+            <div className="mt-5">
+              <a
+                href="https://www.mensakorea.org/bbs/board.php?bo_table=sig_open"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn btn-brand"
+              >
+                시그개설신청 게시판 바로가기
+              </a>
             </div>
           </div>
         </div>

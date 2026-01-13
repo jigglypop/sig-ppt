@@ -75,7 +75,7 @@ export const FederationIntroSection: React.FC = () => {
               lines={[
                 '시그코디네이터',
                 '모개숲 시그장',
-                'NH농협은행 IT기획부 IT신기술융합팀 근무',
+                'NH농협은행 데이터솔루션부 AI솔루션팀 과장보',
               ]}
             />
           </div>

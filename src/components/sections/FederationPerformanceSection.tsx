@@ -54,6 +54,12 @@ export const FederationPerformanceSection: React.FC = () => {
           <Card title="4) 시그 소개 홍보">
             <div className="text-white/90">홍보위원회, 출판위원회 협업으로 대내외 홍보 진행</div>
           </Card>
+
+          <div className="md:col-span-2">
+            <Card title="5) 시그컵 개최">
+              <div className="text-white/90">8개 팀 8개 종목 컵 대회, 시그나이트 파티 개최</div>
+            </Card>
+          </div>
         </div>
       </div>
     </section>

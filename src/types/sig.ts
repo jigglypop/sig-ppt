@@ -7,6 +7,8 @@ export interface Sig {
   category: string;
   image: string | null;
   joinLink: string | null;
+  /** 멘사코리아 가입신청 페이지의 sig_id (예: Domaine -> sig_Domaine) */
+  requestId?: string;
   color: string;
   email?: string;
   instagram?: string;

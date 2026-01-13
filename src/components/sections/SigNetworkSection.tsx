@@ -5,9 +5,6 @@ type SigRow = {
   sigId: string
   sigName: string
   totalMembers: number
-  uniqueMembers: number
-  duplicateMembers: number
-  duplicationRate: number
 }
 
 export const SigNetworkSection: React.FC = () => {
@@ -42,9 +39,6 @@ export const SigNetworkSection: React.FC = () => {
         sigId: String(idx),
         sigName: s.sigName,
         totalMembers: s.totalMembers,
-        uniqueMembers: Math.max(0, Math.round(s.totalMembers * (1 - s.duplicationRate / 100))),
-        duplicateMembers: Math.round(s.totalMembers * (s.duplicationRate / 100)),
-        duplicationRate: s.duplicationRate,
       })),
     [sigData],
   )
@@ -85,26 +79,16 @@ export const SigNetworkSection: React.FC = () => {
 
               <div className="glass rounded-2xl overflow-hidden">
                 <div className="grid grid-cols-12 text-white/70 text-xs px-4 py-2 border-b border-white/10 bg-black/20">
-                  <div className="col-span-7">시그명</div>
-                  <div className="col-span-2 text-right">회원수</div>
-                  <div className="col-span-3 text-right">중복률</div>
+                  <div className="col-span-9">시그명</div>
+                  <div className="col-span-3 text-right">회원수</div>
                 </div>
                 <div ref={listRef} tabIndex={-1} className="max-h-[520px] custom-scroll overflow-auto">
                   <div className="divide-y divide-white/10">
                     {filtered.map((sig) => (
                       <div key={sig.sigId} className="w-full px-4 py-3 flex items-center gap-3">
                         <div className="flex-1 grid grid-cols-12 items-center">
-                          <div className="col-span-7 truncate text-white">{sig.sigName}</div>
-                          <div className="col-span-2 text-right text-white/90">{sig.totalMembers}명</div>
-                          <div className="col-span-3 text-right">
-                            <span className={`px-2 py-1 rounded text-[10px] ${
-                              sig.duplicationRate > 30 ? 'bg-red-500/20 text-red-300' :
-                              sig.duplicationRate > 15 ? 'bg-yellow-500/20 text-yellow-300' :
-                              'bg-green-500/20 text-green-300'
-                            }`}>
-                              {sig.duplicationRate.toFixed(1)}%
-                            </span>
-                          </div>
+                          <div className="col-span-9 truncate text-white">{sig.sigName}</div>
+                          <div className="col-span-3 text-right text-white/90">{sig.totalMembers}명</div>
                         </div>
                       </div>
                     ))}

@@ -87,7 +87,7 @@ export const StatisticsSection: React.FC<StatisticsSectionProps> = ({ statistics
               <h3 className="text-2xl font-title mb-4 text-white">
                 <span className="text-underline-clean" style={{ "--underline-scale": 1 } as CSSProperties}>전체 통계</span>
               </h3>
-              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
                 <div className="text-center">
                   <div className="text-3xl font-bold text-white">{sigData.overallStats.totalSigs}</div>
                   <div className="text-white/70 text-sm mt-1">전체 시그</div>
@@ -97,28 +97,15 @@ export const StatisticsSection: React.FC<StatisticsSectionProps> = ({ statistics
                   <div className="text-white/70 text-sm mt-1">고유 회원</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-3xl font-bold text-white">{sigData.overallStats.totalDuplicates}</div>
-                  <div className="text-white/70 text-sm mt-1">중복 회원</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-3xl font-bold text-white">{sigData.overallStats.averageDuplicationRate}%</div>
-                  <div className="text-white/70 text-sm mt-1">평균 중복률</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-3xl font-bold text-white">{sigData.overallStats.duplicateJoinRate}%</div>
-                  <div className="text-white/70 text-sm mt-1">중복 가입률</div>
+                  <div className="text-3xl font-bold text-white">{sigData.overallStats.totalMembers}</div>
+                  <div className="text-white/70 text-sm mt-1">총 가입</div>
                 </div>
               </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
+              <div className="mt-6">
                 <div className="glass rounded-xl p-4">
                   <h4 className="text-lg font-semibold text-white mb-1">시그별 평균 회원 수</h4>
                   <p className="text-2xl font-bold text-cyan-400">{sigData.overallStats.averageMembersPerSig}명</p>
-                  <p className="text-sm text-white/60 mt-1">시그당 평균 74~75명의 회원 보유</p>
-                </div>
-                <div className="glass rounded-xl p-4">
-                  <h4 className="text-lg font-semibold text-white mb-1">평균 중복 가입 수</h4>
-                  <p className="text-2xl font-bold text-pink-400">{sigData.overallStats.averageDuplicationsPerDuplicate}개</p>
-                  <p className="text-sm text-white/60 mt-1">중복 회원은 평균적으로 3개 이상의 시그에 가입</p>
+                  <p className="text-sm text-white/60 mt-1">시그당 평균 가입 인원</p>
                 </div>
               </div>
             </div>
